@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG-SERVICE
+      profile: test
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9000
+management:
+  security:
+    enabled: false
+## product 路由至 myProduct
+## 查询所有路由配置   http://localhost:9000/routes
+zuul:
+  routes:
+    ## 简洁写法
+    ##product : /myProduct/*
+    myProduct:
+      path: /myProduct/*
+      serviceId : product
+  ## 排查路由
+  ignored-patterns:
+    -- /**/product/listForOrder
+  sensitive-headers:
+
+
+

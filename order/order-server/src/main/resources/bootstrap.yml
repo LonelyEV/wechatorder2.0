@@ -7,6 +7,15 @@ spring:
         enabled: true
         service-id: CONFIG-SERVICE
       profile: test
+  redis:
+    host: 192.168.21.244
+    port: 6379
+#    stream:
+#      binders:
+#        myMessage:
+#          group: order
+#          content-type: application/json
+
 eureka:
   client:
     service-url:

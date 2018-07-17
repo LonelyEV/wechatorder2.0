@@ -1,6 +1,6 @@
 package ones.quzhigang.product.common;
 
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -16,7 +16,11 @@ import java.math.BigDecimal;
  * 作者姓名           修改时间           版本号              描述
  */
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class ProductInfoOutput {
 
     private String productId;
@@ -41,4 +45,6 @@ public class ProductInfoOutput {
 
     /** 类目编号. */
     private Integer categoryType;
+
+
 }
