@@ -92,6 +92,11 @@
       <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+    </dependency>
+
     <!-- 支持前缀配置文件信息读取 -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

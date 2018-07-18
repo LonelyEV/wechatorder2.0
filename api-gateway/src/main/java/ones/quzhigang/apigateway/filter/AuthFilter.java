@@ -13,10 +13,15 @@ package ones.quzhigang.apigateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import ones.quzhigang.apigateway.constant.RedisConstant;
+import ones.quzhigang.apigateway.utils.CookieUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_DECORATION_FILTER_ORDER;
@@ -24,6 +29,10 @@ import static org.springframework.cloud.netflix.zuul.filters.support.FilterConst
 
 @Component
 public class AuthFilter extends ZuulFilter {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
 
     @Override
     public String filterType() {
@@ -58,7 +67,30 @@ public class AuthFilter extends ZuulFilter {
         HttpServletRequest request =  requestContext.getRequest();
 
         // /order/create    只允许卖家访问
+        if("/order/order/create".equals(request.getRequestURI())){
+            Cookie cookie = CookieUtil.get(request, "openId");
+
+            if(cookie == null || StringUtils.isBlank(cookie.getValue())){
+                requestContext.setSendZuulResponse(false);
+                requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+            }
+        }
+
         // /order/finish    只允许买家访问
+
+        if("/order/order/finish".equals(request.getRequestURI())){
+
+            Cookie cookie = CookieUtil.get(request, "token");
+
+            if(cookie == null
+                    || StringUtils.isEmpty(cookie.getValue())
+                    || StringUtils.isEmpty(stringRedisTemplate.opsForValue().get(String.format(RedisConstant.TOKEN_TEMPLATE, cookie.getValue())))){
+
+                requestContext.setSendZuulResponse(false);
+                requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+            }
+        }
+
         // /product/list    买家、卖家都可以访问
 
 

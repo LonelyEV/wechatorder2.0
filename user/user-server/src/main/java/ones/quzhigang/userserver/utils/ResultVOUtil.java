@@ -11,15 +11,30 @@
  */
 package ones.quzhigang.userserver.utils;
 
-import ones.quzhigang.product.vo.ResultVO;
+import ones.quzhigang.userserver.enums.ResultEnum;
+import ones.quzhigang.userserver.vo.ResultVo;
 
 public class ResultVOUtil {
 
-    public static ResultVO success(Object object) {
-        ResultVO resultVO = new ResultVO();
-        resultVO.setData(object);
-        resultVO.setCode(0);
-        resultVO.setMsg("成功");
-        return resultVO;
+    public static ResultVo success(Object object) {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(0);
+        resultVo.setMsg("成功");
+        resultVo.setData(object);
+        return resultVo;
+    }
+
+    public static ResultVo success() {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(0);
+        resultVo.setMsg("成功");
+        return resultVo;
+    }
+
+    public static ResultVo error(ResultEnum resultEnum) {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(resultEnum.getCode());
+        resultVo.setMsg(resultEnum.getMessage());
+        return resultVo;
     }
 }
